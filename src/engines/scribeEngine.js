@@ -22,7 +22,7 @@ export function createScribeEngine({ token, language, onPartial, onCommitted }) 
         try {
           const msg = JSON.parse(event.data);
           handleMessage(msg);
-        } catch (_) {
+        } catch {
           // Ignore non-JSON messages
         }
       };
@@ -73,7 +73,7 @@ export function createScribeEngine({ token, language, onPartial, onCommitted }) 
     let recorder;
     try {
       recorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-    } catch (_) {
+    } catch {
       recorder = new MediaRecorder(stream);
     }
 

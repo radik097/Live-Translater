@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { text, voiceId, language } = req.body || {};
+  const { text, voiceId } = req.body || {};
   if (!text || !voiceId) {
     return res.status(400).json({ error: 'Missing required fields: text, voiceId' });
   }
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      res.write(Buffer.from(value));
+      res.write(value);
     }
     res.end();
   } catch (err) {

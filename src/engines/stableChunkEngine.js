@@ -1,5 +1,4 @@
 export function createStableChunkEngine({ onChunk }) {
-  let buffer = '';
   let lastSent = '';
 
   const instance = {
@@ -23,7 +22,6 @@ export function createStableChunkEngine({ onChunk }) {
       if (!toSend) return;
 
       lastSent = normalized;
-      buffer = '';
 
       const chunks = splitIntoChunks(toSend);
       for (const chunk of chunks) {
@@ -34,7 +32,6 @@ export function createStableChunkEngine({ onChunk }) {
     },
 
     reset() {
-      buffer = '';
       lastSent = '';
     },
   };

@@ -69,7 +69,7 @@ async function ensurePermission() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     stream.getTracks().forEach((t) => t.stop());
-  } catch (_) {
+  } catch {
     // Permission denied or not available
   }
 }

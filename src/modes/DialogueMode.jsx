@@ -9,7 +9,7 @@ import { createDialogueCoordinator } from '../engines/dialogueCoordinator.js';
 import { addEntry, getEntries, clearEntries } from '../storage/transcriptStore.js';
 import { saveSettings, loadSettings } from '../storage/settingsStore.js';
 
-export default function DialogueMode({ onDebugUpdate }) {
+export default function DialogueMode() {
   const saved = loadSettings() || {};
 
   const [inputDevices, setInputDevices] = useState([]);

@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { text, sourceLang, targetLang, mode } = req.body || {};
+  const { text, sourceLang, targetLang } = req.body || {};
   if (!text || !sourceLang || !targetLang) {
     return res.status(400).json({ error: 'Missing required fields: text, sourceLang, targetLang' });
   }
