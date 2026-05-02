@@ -4,28 +4,46 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.ELEVENLABS_API_KEY;
+  const agentId = process.env.ELEVENLABS_AGENT_ID;
+
   if (!apiKey) {
     return res.status(500).json({ error: 'ELEVENLABS_API_KEY not configured' });
   }
 
+  if (!agentId) {
+    return res.status(500).json({ error: 'ELEVENLABS_AGENT_ID not configured' });
+  }
+
   try {
-    const response = await fetch('https://api.elevenlabs.io/v1/convai/conversation/token', {
-      method: 'POST',
+    const url = new URL('https://api.elevenlabs.io/v1/convai/conversation/token');
+    url.searchParams.set('agent_id', agentId);
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
       headers: {
         'xi-api-key': apiKey,
-        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({}),
     });
 
+    const responseText = await response.text();
+
     if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).json({ error: errorText });
+      return res.status(response.status).json({
+        error: 'ElevenLabs token request failed',
+        status: response.status,
+        body: responseText,
+      });
     }
 
-    const data = await response.json();
-    return res.status(200).json({ token: data.token });
+    const data = JSON.parse(responseText);
+
+    return res.status(200).json({
+      token: data.token,
+    });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: 'Internal server error',
+      message: err instanceof Error ? err.message : String(err),
+    });
   }
 }
